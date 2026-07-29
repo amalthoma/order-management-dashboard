@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # CORS
     ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
     
+    # Integrations
+    CURRENCY_API_URL: str = "https://open.er-api.com/v6/latest"
+    
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, extra="ignore")
 
 settings = Settings()

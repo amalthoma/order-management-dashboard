@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.dependencies import get_db, get_current_user
 from app.schemas.order import OrderCreate, OrderResponse, OrderUpdateStatus
+from app.schemas.order_filter import OrderFilter
+from app.schemas.pagination import PaginatedResponse
 from app.services.order_service import OrderService
 from app.models.user import User
 from app.utils.responses import StandardResponse
@@ -31,19 +33,20 @@ async def create_order(
 
 @router.get(
     "/",
-    response_model=StandardResponse[List[OrderResponse]],
+    response_model=StandardResponse[PaginatedResponse[OrderResponse]],
     status_code=status.HTTP_200_OK,
     summary="List Orders"
 )
 async def list_orders(
+    filters: OrderFilter = Depends(),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """List all orders."""
+    """List orders with filtering, sorting, and pagination."""
     order_service = OrderService(db)
-    orders = await order_service.list_orders()
+    paginated_orders = await order_service.list_orders_filtered(filters)
     return StandardResponse(
-        data=orders,
+        data=paginated_orders,
         message="Orders retrieved successfully"
     )
 
