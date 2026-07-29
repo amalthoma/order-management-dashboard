@@ -54,3 +54,16 @@ ENV/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+
+# Frontend (Node / Vite / React)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/.eslintcache
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.vite/
+frontend/*.tsbuildinfo
